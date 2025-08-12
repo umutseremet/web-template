@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>VERVO Portal - Kullanıcı Girişi</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="./image/jpg" sizes="16x16" href="./images/vervo-logo.jpg">
+    <link href="./css/style.css" rel="stylesheet">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="./vendor/toastr/css/toastr.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="h-100">
+    <div class="authincation h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form" style="background: #fff">
+                                    <div class="text-center">
+                                        <a href="#"><img src="./images/vervo.png" class="width300 rounded-lg"
+                                                alt=""></a>
+                                    </div>
+                                    <h4 class="text-center mb-5 text-black"></h4>
+                                    <form action="index.html">
+                                        <div class="form-group">
+                                            <input id="userName" type="text" class="form-control"
+                                                placeholder="Kullanıcı Adı">
+                                        </div>
+                                        <div class="form-group">
+                                            <input id="password" type="password" class="form-control"
+                                                placeholder="Şifre">
+                                        </div>
+                                        <div class="form-row d-flex justify-content-between mt-4">
+                                            <div class="form-group">
+                                                <div class="custom-control custom-checkbox ml-1 text-black">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="basic_checkbox_1">
+                                                    <label class="custom-control-label" for="basic_checkbox_1">Beni
+                                                        Hatırla</label>
+                                                </div>
+                                            </div>
+                                            <input value="Giriş Yap" id="login_button" type="submit"
+                                                class="btn text-white" style="background: #015e80;">
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12" style="background: #fff">
+                                <div class="text-center mb-3"> Powered <a class="heart text-white"> </a> by Vervo &nbsp;
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="./vendor/global/global.min.js"></script>
+    <script src="./js/custom.min.js"></script>
+    <script src="./js/deznav-init.js"></script>
+    <!-- Toastr -->
+    <script src="./vendor/toastr/js/toastr.min.js"></script>
+    <script>
+
+        var input = document.getElementById("password");
+        input.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("login_button").click();
+            }
+        });
+        $(document).ready(function () {
+
+            $('#login_button').click(function () {
+
+                var logindto = {
+                    UserName: $('#userName').val(),
+                    Password: $('#password').val(),
+                    Rememberme: document.getElementById("basic_checkbox_1").checked
+                };
+
+                $.ajax({
+                    type: 'post',
+                    url: '/signin',
+                    data: logindto,
+                    success: function (result) {
+                        if (result.message.includes("Ok")) {
+                            window.location.href = result.redirectToUrl;
+                        } else {
+                            toastr.error(result.message);
+                        }
+
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
